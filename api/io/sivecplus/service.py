@@ -1,18 +1,18 @@
-from api.io.sivecplus.controller import SerialController
+from api.io.sivecplus.controller import SivecController
 
-serial_controller = SerialController()
+sivec_controller = SivecController()
 
-def start_serial_service(port_name: str):
-    serial_controller.open(port_name)
+def start_sivec_service(port_name: str):
+    sivec_controller.open(port_name)
 
 def start_record_service():
-    serial_controller.start_record()
+    sivec_controller.start_record()
 
 def pause_record_service():
-    serial_controller.pause_record()
+    sivec_controller.pause_record()
 
 def send_command_service(port_name: str, command: str):
-    serial_controller.send(port_name, command)
+    sivec_controller.send(port_name, command)
     
-def close_serial_service(port_name: str):
-    serial_controller.close(port_name)
+def close_sivec_service(port_name: str):
+    sivec_controller.close(port_name)
