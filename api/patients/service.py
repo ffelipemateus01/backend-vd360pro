@@ -1,5 +1,6 @@
 from api.patients.models import Patient
 from core.database import connection
+import json
 
 def insert_paciente(paciente: Patient) -> Patient | None:
     with connection.cursor() as cursor:
@@ -16,7 +17,7 @@ def insert_paciente(paciente: Patient) -> Patient | None:
             return paciente_inserido
         except Exception as e:
             connection.rollback()
-            print('Python service: Houve um problema ao tentar inserir um paciente.\r\n{}'.format(e))
+            print(f'Python service: Houve um problema ao tentar inserir um paciente. {e}')
             return None
 
 
@@ -31,11 +32,12 @@ def get_all_pacientes(offset: int):
             if list_pacientes is None:
                 print('Python service: Banco de dados não retornou nenhum item na lista.')
                 return None
-            print('Python service: Lista de pacientes adquirida com sucesso.')
+            jdata = json.dumps(list_pacientes, default=str)
+            print(f'Python service: Lista de pacientes adquirida com sucesso.\n{jdata}')
             return list_pacientes
         except Exception as e:
             connection.rollback()
-            print('Python service: Houve um problema ao tentar listar os pacientes.\r\n{}'.format(e))
+            print(f'Python service: Houve um problema ao tentar listar os pacientes. {e}')
             return None
         
 def get_paciente_by_id(id: int):
@@ -60,11 +62,11 @@ def get_paciente_by_id(id: int):
                 email=paciente_data[7],
                 fotopath=paciente_data[8]
             )
-            print('Python service: O paciente {} foi encontrado.'.format(paciente_encontrado.nome))
+            print(f'Python service: O paciente {paciente_encontrado.nome} foi encontrado.')
             return paciente_encontrado
         except Exception as e:
             connection.rollback()
-            print('Python service: Houve um problema ao tentar buscar o paciente.\r\n{}'.format(e))
+            print(f'Python service: Houve um problema ao tentar buscar o paciente. {e}')
             return None
         
 def count_pacientes():
@@ -76,9 +78,9 @@ def count_pacientes():
             if n_pacientes is None:
                 print('Python service: Banco de dados retornou um paciente vazio')
                 return None
-            print('Python service: Existem {} pacientes.'.format(n_pacientes))
+            print(f'Python service: Existem {n_pacientes} pacientes.')
             return n_pacientes
         except Exception as e:
             connection.rollback()
-            print('Python service: Houve um problema ao tentar contar os paciente.\r\n{}'.format(e))
+            print(f'Python service: Houve um problema ao tentar contar os paciente. {e}')
             return None
