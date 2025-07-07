@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator
-from datetime import datetime, timezone
+from datetime import datetime#, timezone
 
 class Patient(BaseModel):
     id: int | None = None
@@ -15,7 +15,7 @@ class Patient(BaseModel):
 
     @field_validator('data_nascimento')
     def check_birthday_date(cls, date: datetime) -> datetime:
-        if date > datetime.now(timezone.utc):
+        if date > datetime.now():#timezone.utc):
             raise ValueError("Data de nascimento inválida.")
         return date
     
